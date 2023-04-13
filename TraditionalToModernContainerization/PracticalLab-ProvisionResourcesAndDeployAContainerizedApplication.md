@@ -13,48 +13,54 @@ For this exercise, you will not need to make any code changes.  For that reason,
 Must haves to complete this assignment:
 
 1. Any text-based IDE
+1. (Windows machines only) Windows Subsystem for Linux (WSL)
+1. (Windows machines only) Ubuntu on WSL
 1. Docker Desktop (or an ability to run Docker commands locally)
 1. Any terminal to run Docker commands.
-1. Source Code [found here]
+1. Source Code [found here](./resources/SimpleTravelAgencyProtoWeb.zip)  
+1. Azure CLI
 
+> **Important:** By this point in the training, it is assumed you have already learned about and have Docker working on your local machine.  If you do not have Docker and/or you are not able to create and work with images, then you should go back and work through the documents for [Introduction to Docker](03_docker-intro.md), [Docker Commands](05_docker-commands.md), and [How to Dockerize with Dockerfile](06_dockerfile.md).  
+
+### Additional Resources Downloads
+
+In case you need to find other resources, perhaps these will help:
+
+1. If you do not have any editor, just get VSCode.
+
+    - [Download Visual Studio Code](https://code.visualstudio.com/download)  
+
+1. If you are on a windows machine, you will have to have WSL
+
+1. If you do not have `Docker` the easiest way to get it is [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+
+1. If you can't use Docker Desktop (licensing issues), then you will need to just [install docker on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)  
+
+1. Azure CLI [use this link to install it.](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)  
 
 ## Code Along and build out the environment  
 
 In the next few activities, you will build out a containerized application and then work though the steps to deploy the application to Azure Container Instances, with your image hosted on Azure Container Registry.  
 
-As the learning progresses, concepts will build on things already learned and failure to complete a section will likely result in the inability to complete consecutive sections.  Therefore it is recommended that you do not skip ahead, but rather work through the activities as they are presented.  
+As the learning progresses, concepts will build on things already learned and failure to complete any section in order will likely result in the inability to complete consecutive sections.  
 
-> **Note:** The remainder of this work requires access to an Azure subscription.  Do not delete resources after creation as the work builds on itself as it goes.
+Therefore, it is recommended that you do not skip ahead, but rather work through the activities as they are presented.  
+
+> **Note:** The remainder of this work requires access to an Azure subscription.  Do not delete resources after creation as the work builds on itself as it goes.  Only delete resources once you have completed the lab.
 
 ## Activity: Build and store container images with Azure Container Registry
 
 This first activity will walk you through getting your application built and deployed to the Azure Container Registry (ACR). 
 
-### Prerequisites
-
-In order to complete this activity, you must have either `Visual Studio Code (VSCode)` or `Visual Studio (VSCommunity, VSPro, VSEnterprise)` installed on your machine.  Since this will be run in a container, you will not need to install any additional SDKs on your machine. 
-
-If you do not have `VSCode` or `VSCommunity`, both are free.  You can download the tool of your choice.  As most of the work will not be with the actual code but will be around working with Docker and Azure, the recommended tool for this training is Visual Studio Code.
-
-Ensure you have one of the following:  
-
-- [Download Visual Studio Code](https://code.visualstudio.com/download)  
-- [Download Visual Studio Community](https://visualstudio.microsoft.com/vs/community/)
-
-Ensure you have Docker and Docker Desktop working on your machine.  
-
-> **Important:** By this point in the training, it is assumed you have already learned about and have Docker working on your local machine.  If you do not have Docker and/or you are not able to create and work with images, then you should go back and work through the documents for [Introduction to Docker](03_docker-intro.md), [Docker Installation](04_docker-installation.md), [Docker Commands](05_docker-commands.md), and [How to Dockerize with 
-> Dockerfile](06_dockerfile.md).  
-
 ### Step 1: Get the starter project for working with a .Net web application  
 
 The starter project will be easily accessed from this repository, and will be posted into the slack channel to give the ability to easily download the source file.  
 
-[SimpleTravelAgencyProtoWeb](https://git.generalassemb.ly/mtbank/cloud-native/raw/master/SimpleTravelAgencyProtoWeb/SimpleTravelAgencyProtoWeb.zip)  
+[SimpleTravelAgencyProtoWeb](./resources/SimpleTravelAgencyProtoWeb.zip)    
 
 ### Step 2: Extract the contents of the file and build and run the prototype website locally
 
-Before doing anything at Azure,  it's a good idea to ensure that everything works locally.  
+Before doing anything at Azure,  it's a good idea to ensure that everything works locally.  If you don't have .NET installed, then you won't be able to build and run the code locally.  However, the container will be able to be built and you can still test it out.  How awesome is that?
 
 #### Step 2.a Extract the file  
 
@@ -64,6 +70,10 @@ Additionally, open a Terminal to the folder root where the `SimpleTravelAgencyPr
 
 ![The working directory contains the files as described, and a terminal is open to the folder](images/09AzureContainerInstances/image0001.png)  
 
+>**Note:** It is sufficient to open this in WSL or any terminal that can run docker commands
+
+![You can extract the files and just run the commands in any terminal](images/09AzureContainerInstances/image0001.5.png)
+
 #### Step 2.b Build the local image  
 
 To build the local image, run the following command:  
@@ -71,6 +81,7 @@ To build the local image, run the following command:
 ```bash
 docker build -t simpletravelagencyproto .
 ```  
+
 ![The build completes as expected](images/09AzureContainerInstances/image0002.png)  
 
 Wait for the command to complete, then validate the image is listed in your `Docker Desktop client`.  
@@ -101,13 +112,29 @@ Expand the `optional` settings.  If you would like, you can set a container name
 
 Make sure to set the port for 443 to something that is not in use, like `8081`.  
 
+Add a second port for port `80`, set to port `8082` (must also be unique and not in use).  
+
 ![Configuring ports](images/09AzureContainerInstances/image0003.2.png)  
 
-Add a second port using the `+` sign for port `80`, set to port `8082` (must be unique and not in use).  
+**Run the container** once you have the ports configured correctly. 
 
-![Configuring ports](images/09AzureContainerInstances/image0003.3.png)  
+##### Alternate to Docker Desktop
 
-Run the container once you have the ports configured correctly.  
+If you don't have docker desktop, you can run the container manually:
+
+```bash
+docker run -dp 8082:80 simpletravelagencyproto
+```  
+
+Once the container is running, you can browse to it just like above using:
+
+```http
+http://localhost:8082/
+```  
+
+>**Note:** The app may automatically open for you if you run the commands locally without Docker Desktop!
+
+![Configuring ports](images/09AzureContainerInstances/image0003.6.png)  
 
 #### Step 2.d Ensure the container works locally
 
@@ -117,11 +144,11 @@ On `Docker Desktop`, navigate to your running containers and use the `browse` bu
 
 ![browse](images/09AzureContainerInstances/image0003.4.png) 
 
-This will open to the port 443 instance, which will not work.
+>**Note:** If you select the 8081:443 option, this will open to the port 443 instance, which will not work.
 
 ![443 port doesn't work](images/09AzureContainerInstances/image0003.5.png)  
 
-Change the type to `http` and the port to `8092` and you will be able to view the site
+If you do that, just change the url to `http` and the port to `8092` and you will be able to view the site:
 
 ```text
 http://localhost:8082
@@ -131,7 +158,8 @@ http://localhost:8082
 
 ![The application is running as expected](images/09AzureContainerInstances/image0004.png)  
 
-### Step 3 - Create an Azure Container Registry in the Azure Portal, and push your image to the ACR
+
+### Step 3 - Create an Azure Container Registry in the Azure Portal, and push your image to the ACR  
 
 To begin, you will need to log in to your Azure Subscription.  Once you are logged in, you will need to have a resource group where you will create your resources.  
 
@@ -145,27 +173,19 @@ Resource Group
 
 ![searching for resource groups at Azure](images/09AzureContainerInstances/image0005.png)  
 
-Once you are on the Resource Groups listing, ensure a group exists with <yourname>-rg as the name of the resource group.
+Once you are on the Resource Groups listing, ensure a group exists with `Student00XX-rg` as the name of the resource group. (XX is your student number, such as 02, 25, 99, etc). 
 
 ![ensure your resource group exists](images/09AzureContainerInstances/image0006.png)  
 
 If no group exists with your name, create one using the `+ Create` prompt at the top menu on the listing.  If you cannot create one, ask your instructor to create a resource group for you.
 
+![Create a new resource group if you must](images/09AzureContainerInstances/image0006a.png)  
+
 #### Step 3.b - Create the ACR
 
 In this step you will create an Azure Container Registry to store your docker images.
 
-It is possible to complete this operation using the Azure CLI commands.  However, it is likely easier and more intuitive to do this in the azure portal.
-
-For reference the following command would create an ACR:  
-
-```bash  
-az acr create --name <any-unique-acr-name> --resource-group <any-rg> --sku <the-sku> --admin-enabled true --subscription "<your-subscription-id>"
-```  
-
-However, to do this, you would need to know the subscription Id and you would also need to know the name of your resource group, or first create a resource group and also get the subscription Id.
-
-For simplicity, just open the portal at Azure if you don't already have it open.  
+The easiest way to do this is to just open the portal at Azure if you don't already have it open.  
 
 To create an ACR, type the following into the search bar at the top menu in the portal:
 
@@ -189,7 +209,7 @@ At the `Container registries` blade, select `+ Create` to begin the process of c
     myacrYYYYMMDDzzz
     ```  
 
-    Replace `YYYYMMDD` with the year, month, and day, and `zzz` with your initials.  This *should* ensure a unique name.  
+    Replace `YYYYMMDD` with the year, month, and day, and `zzz` with your initials.  This *should* ensure a unique name.  If not, put in another date other than today.  
 
     Select a region close to you, and change the `SKU` to `Basic`. 
 
@@ -223,11 +243,13 @@ At the `Container registries` blade, select `+ Create` to begin the process of c
 
     On the left menu, select `Access Keys`.  When the blade shows, use the slider button to enable the Admin user.  This will give you the admin credentials.  
 
-    ![Showing the admin credentials](iamges/../images/09AzureContainerInstances/image0009.5.png)  
+    ![Showing the admin credentials](images/09AzureContainerInstances/image0009.5.png)  
 
     Note that the registry name and the username are the same.  Note that the Login server is the registry name with `.azurecr.io` at the end.  
 
-    Copy the username, password, and login server for use later.  For  now, just paste into notepad or some other tool that lets you quickly retrieve these values later.  
+    Copy the **username**, **password**, and **login server** for use later.  
+    
+    For now, just paste into notepad or some other tool that lets you quickly retrieve these values later.  
 
 ### Step 3.c - Alias your image and push to the ACR  
 
@@ -245,7 +267,7 @@ In this step you will alias a local image and push the image to the ACR.  You wi
     az --version
     ```  
 
-    If you have the `Azure CLI` installed, you will see the version number, such as 2.28.0
+    If you have the `Azure CLI` installed, you will see the version number, such as 2.31.0
 
     Ensure that you see output that indicates you have the Azure CLI installed.  
 
@@ -257,7 +279,7 @@ In this step you will alias a local image and push the image to the ACR.  You wi
 
     If you are on windows, [this direct link](https://aka.ms/installazurecliwindows) will download the MSI Installer, which you can run to install the Azure CLI on your machine.
 
-    Sign in to your Azure account by opening a browser to the [azure portal](https://portal.azure.com):
+    If you are not already signed in, sign in to your Azure account by opening a browser to the [azure portal](https://portal.azure.com):
 
     ```https
     https://portal.azure.com
@@ -271,11 +293,11 @@ In this step you will alias a local image and push the image to the ACR.  You wi
     az login
     ```  
 
-    Likely a browser will open and you will need to authenticate:
+    Likely a browser will open and you will need to authenticate.  Once you've authenticated, you'll see information about your subscription.
 
     ![Sign in to your Azure account](images/09AzureContainerInstances/image0011.png)
 
-    If you only have one subscription, you can skip to the next step.
+    >**Note:** If you only have one subscription, you can skip to the next step `Log in to your ACR`.
 
     If you have more than one subscription, ensure that you are on the correct subscription for your account.  
 
@@ -293,7 +315,7 @@ In this step you will alias a local image and push the image to the ACR.  You wi
 
     ![The correct subscription is selected](images/09AzureContainerInstances/image0013.png)  
 
-2. Log in to your ACR.
+1. Log in to your ACR.
 
     Now that you have logged in to Azure, ensure you are also logged into your ACR from the terminal.  Using the name of your registry that you copied earlier (your admin username is the same value), run the following command replacing `your-registry-name` with your admin username/registry name
 
@@ -303,6 +325,7 @@ In this step you will alias a local image and push the image to the ACR.  You wi
 
     If prompted, you may need to enter credentials.  If not, you will immediately see `Login Succeeded`.  
 
+    ![Login to the ACR success](images/09AzureContainerInstances/image0013a.png)  
 
 3. Create a local alias of the image with the correct information from your Azure Container Registry.  
 
@@ -382,20 +405,24 @@ In this step. you will create an Azure Container Instances deployment which leve
 
     In the search at the top of the portal, type `container instances`.  Then select the appropriate item from the dropdown. 
 
+    ![searching for container instances](images/09AzureContainerInstances/image0019a.png)  
+
     On the `Container instances` blade, select `+ Create` or `Create Container Instances`.  
 
     Use the following on the `Basics` tab:
 
     Subscription: `your subscription`  
     Resource Group: `your resource group`  
-    Container name: `simpletravelagencywebYYYYMMDDzzz`
-    Region: `your favorite region`
+    Container name: `simpletravelagencywebYYYYMMDDzzz`  
+    Region: `your favorite region`  
+    Availability zones: `None`   
+    SKU: `Standard`  
     Image Source: `Azure Container Registry`  
     Registry: `Select your registry`  
     Image: `simpletravelagencyproto`
     Image tag: `v1`  
-    OS Type: [automatic, can't change]
-    Size: Leave as is - `1 vcpu, 1.5 GiB memory, 0 gpus`
+    OS Type: `Linux`  
+    Size: Leave as is - `1 vcpu, 1.5 GiB memory, 0 gpus`  
 
     select `Next: Networking >`  
 
@@ -403,13 +430,22 @@ In this step. you will create an Azure Container Instances deployment which leve
 
     Note the options available on the networking tab.  Note the DNS Label, and note the port mappings.  As expected, port 80 is mapped by default.  
 
-    There is no need to change anything.  Hit the `Next: Advanced >` button.  
+    Add a new DNS name label with `No reuse` scope (note that you must update the following to something unique with only small letters and numbers in the name):
 
-    Note how on this tab you can select a restart policy and add additional environment variables, including secure variables.  
+    ```text
+    simpletravelagencywebYYYYMMDDzzz
+    ```  
 
-    Finally, note there is a command override to let you execute a command on startup.  
+    ![Creating a unique DNS name and ensuring port 80](images/09AzureContainerInstances/image0020a.png) 
 
-    Once again, leave everything as-is and hit the `Review + create` button.  Once your ACI is validated, hit `Create`.  
+
+    Hit the `Next: Advanced >` button.  
+
+    Note how on this tab you can select a restart policy and add additional environment variables, including secure variables. For example, if you needed a database or other connection string here, you could enter it in this location. 
+
+    Finally, note there is a command override to let you execute a command on startup should you want to run some script inside the container.  
+
+    There is no need to change anything, so hit the `Review + create` button.  Once your ACI is validated, hit `Create`.  
 
     ![The configuration is validated and the cursor is hovering over the create button to start the deployment](images/09AzureContainerInstances/image0021.png)  
 
@@ -417,11 +453,11 @@ In this step. you will create an Azure Container Instances deployment which leve
 
 1. Review the deployed containerized application.
 
-    Once the deployment is successful, you can easily see your application working by browsing to the public IP for your ACI.  
+    Once the deployment is successful, you can easily see your application working by browsing to the public IP for your ACI or the DNS name you entered.  
 
-    ![The ACI deployment is completed, and it has a public-facing IP](images/09AzureContainerInstances/image0022.png)  
+    ![The ACI deployment is completed, and it has a public-facing IP and DNS name](images/09AzureContainerInstances/image0022.png)  
 
-    If you browse to the public-facing URL at this time, your deployment should be working.  If the deployment is not working, wait a minute or two and try again.  The first load may just be taking too long.  
+    If you browse to the public-facing URL either by IP or by the FQDN at this time, your deployment should be working.  If the deployment is not working, wait a minute or two and try again.   
 
     ![The website is deployed as a containerized web application using Azure Container Instances and the image being directly pulled from the Azure Container Registry](images/09AzureContainerInstances/image0023.png)  
 
@@ -445,7 +481,7 @@ Use the `bin/sh` connection to review the internal state of the container.
 
 ![The ACI has a nice review blade that shows events on the container.  An arrow points to the tab to connect to the container](images/09AzureContainerInstances/image0026.png)  
 
-As you've seen in previous days, you can attach to the running container and run linux commands on the container itself for troubleshooting.  
+Now you know that, should the need arise, you can attach to the running container and run linux commands on the container itself for troubleshooting.  
 
 ## Additional Resources and Practice  
 
