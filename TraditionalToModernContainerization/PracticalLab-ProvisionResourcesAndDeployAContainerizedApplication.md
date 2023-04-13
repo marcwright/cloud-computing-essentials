@@ -1,3 +1,23 @@
+# ![](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png) Practice Lab: Deploying Containers In Azure
+
+In this guided lab, you'll learn how to provision the necessary resources and then deploy your containerized applications into Azure Container Instances (ACI) via images you build and store in the Azure Container Registry (ACR).
+
+## Prerequisites
+
+In order to make any changes to this code you would need to have a .NET development environment set up.  If you want to do that, you will need to get the tools necessary.  The recommendation would be to just get the latest version of Visual Studio or VSCode on your machine.
+
+For this exercise, you will not need to make any code changes.  For that reason, you can leverage any text-based IDE of choice (i.e. VSCode, IntelliJ, Eclipse, etc).  You may even be able to get away with using notepad or notepad++.
+
+>**Note:** The examples in this lab do use Docker Desktop.  IF you do not have Docker Desktop, you can accomplish the build and push commands necessary from the standard Docker CLI in any terminal.
+
+Must haves to complete this assignment:
+
+1. Any text-based IDE
+1. Docker Desktop (or an ability to run Docker commands locally)
+1. Any terminal to run Docker commands.
+1. Source Code [found here]
+
+
 ## Code Along and build out the environment  
 
 In the next few activities, you will build out a containerized application and then work though the steps to deploy the application to Azure Container Instances, with your image hosted on Azure Container Registry.  

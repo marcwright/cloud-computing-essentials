@@ -13,7 +13,6 @@
 |:--|---|---|  
 | 5 min  | Overview | Containerized applications in the Azure ecosystem |  
 | 15 min | Lecture | Azure Cloud-Native PaaS Offerings |
-| 60 min | Activity | Creating and utilizing ACR and ACI for containerized applications |  
 
 # Overview  
 
@@ -27,7 +26,29 @@ As usual, should you desire to have even more control over underlying architectu
 
 ## Azure Cloud-Native Application PaaS offerings.
 
-Within Azure, you can create a containerized application that runs on any of three different platform services.  
+Within Azure, you can create a containerized application that runs on any of four different platform services.  In order to host your application, you can push images to Docker Hub or to the Azure Container Registry.
+
+In this section, we'll examine the container registry then we'll briefly discuss the four options for containerized applications with Azure platform services.
+
+### Azure Container Registry (ACR)  
+
+Earlier in the course you were exposed to working with Docker containers, and at one point you likely pulled and/or pushed container images to DockerHub.  DockerHub has traditionally been the most common platform to work with container images. Truly you will find most public container images are hosted at DockerHub.  
+
+In your private organization, you really have two options. The first option is to utilize DockerHub and create a private registry there. In fact, if you already have a private registry at DockerHub, you may desire to continue utilizing DockerHub as your container registry.
+
+However, you may find that you want a bit more control and segregation for your images. At Azure, the Azure Container Registry (ACR) is a platform service that functions just like DockerHub - as a centralized repository for your organization's images.  The advantages to using ACR are that this is a unique registry that is only for your organization.  You will have full control over all access to the images.  You can even restrict access to your ACR to a private network, making it even more secure.
+
+Like Docker itself, container registries have a bit of a learning curve.  While being similar to a Git repository with push and pull commands, as well as versions, the interaction with a container registry is a little less obvious as you must leverage tags to utilize the repository, rather than having branches and commit histories.  Tags (versions) on your images allow you to have multiple instances available for deployment.  This does give you quite a bit of power.  However, we all know:  
+
+![With great power comes great responsibility](https://media.giphy.com/media/MCZ39lz83o5lC/giphy.gif)  
+
+### Azure Container Instances (ACI)
+
+The first place that you should look when learning about deploying containerized applications to Azure is Azure Container Instances (ACI).  The ACI offering at Azure gives you the ability to quickly and easily deploy a containerized application that lives with one container or a small container group and doesn't require a lot of overhead or have an extremely high workload. 
+
+ACI gives you the ability to quickly deploy your solutions, and has the ability to directly integrate with the Azure Container Registry (ACR).  You can then easily push images to your ACR and deploy changes to your ACI instance.  You will get a chance to see all of this in action soon, as this will be the service we'll leverage when we work through the lab in a few minutes.
+
+More information about ACI can be found in the [Azure Container Instances Documentation](https://docs.microsoft.com/en-us/azure/container-instances/)  
 
 ### Azure App Service (App Service)
 
@@ -41,13 +62,19 @@ When you use this approach, you get all the compute power and ability to work wi
 
 There is not enough time to work with all three options.  For this reason, the use of Azure App Service to deploy and work with containers is not in scope for this training.  However, [this learn module on deploying and running container app service](https://docs.microsoft.com/en-us/learn/modules/deploy-run-container-app-service/) is a great opportunity to learn on your own if you would like to try it out.   
 
-### Azure Container Instances (ACI)
+>**Note:** If you are using a provided subscription for this training you may be able to deploy an Azure App Service in the Free Tier, but you may also be on a subscription that is locked down, as this is outside of the scope of the course.
 
-The first place that you should look when learning about deploying containerized applications to Azure is Azure Container Instances (ACI).  The ACI offering at Azure gives you the ability to quickly and easily deploy a containerized application that lives with one container or a small container group and doesn't require a lot of overhead or have an extremely high workload. 
+### Azure Container Apps (ACA)
 
-ACI gives you the ability to quickly deploy your solutions, and has the ability to directly integrate with the Azure Container Registry (ACR).  You can then easily push images to your ACR and deploy changes to your ACI instance.  You will get a chance to see all of this in action soon!
+Azure Container Apps is a newer offering at Azure that is a platform service which abstracts the underlying Kubernetes instance.  
 
-More information about ACI can be found in the [Azure Container Instances Documentation](https://docs.microsoft.com/en-us/azure/container-instances/)  
+What this means for you and your team is that you can leverage all of the power and functionality of Azure Kubernetes Service (AKS) - covered in the next point - without having to learn Kubernetes.
+
+Of course as a platform service you may pay a bit more but you get the benefits of not having to build an entire Kubernetes Cluster from scratch.
+
+[Building an Azure Container App in the Azure Portal](https://learn.microsoft.com/en-us/azure/container-apps/quickstart-portal)
+
+>**Note:** If you are using a provided subscription for this training you will not be able to deploy an Azure Container Apps instance, as that option will not be allowed on the subscription.
 
 ### Azure Kubernetes Service (AKS)
 
@@ -58,18 +85,6 @@ In this case, you will want to leverage the full power of Azure Kubernetes Servi
 If you would like to try a getting started with AKS activity, you can [review this tutorial](https://learn.microsoft.com/en-us/azure/aks/tutorial-kubernetes-prepare-app).  Follow through at least the first four tutorials to get to a working application, with tutorials 5, 6, and 7 as additional/optional learning.
 
 >**Note:** If you are using a provided subscription for this training you will not be able to deploy an AKS cluster as that option will not be allowed on the subscription.
-
-### Azure Container Registry (ACR)  
-
-Earlier in the course you were exposed to working with Docker containers, and at one point you likely pulled and/or pushed container images to DockerHub.  DockerHub has traditionally been the most common platform to work with container images. Truly you will find most public container images are hosted at DockerHub.
-
-In your private organization, you really have two options. The first option is to utilize DockerHub and create a private registry there. In fact, if you already have a private registry at DockerHub, you may desire to continue utilizing DockerHub as your container registry.
-
-However, you may find that you want a bit more control and segregation for your images. At Azure, the Azure Container Registry (ACR) is a platform service that functions just like DockerHub - as a centralized repository for your organization's images.  The advantages to using ACR are that this is a unique registry that is only for your organization.  You will have full control over all access to the images.  You can even restrict access to your ACR to a private network, making it even more secure.
-
-Like Docker itself, container registries have a bit of a learning curve.  While being similar to a Git repository with push and pull commands, as well as versions, the interaction with a container registry is a little less obvious as you must leverage tags to utilize the repository, rather than having branches and commit histories.  Tags (versions) on your images allow you to have multiple instances available for deployment.  This does give you quite a bit of power.  However, we all know:  
-
-![With great power comes great responsibility](https://media.giphy.com/media/MCZ39lz83o5lC/giphy.gif)  
 
 ## Completing the learning
 
