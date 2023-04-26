@@ -10,8 +10,8 @@
 | Topic | Type | Timing |
 | --- | --- | -- |
 | Container Lifecycle       | Lecture | 15 min |
-| Docker Commands       | Lecture | 40 min |
-| Power of Docker | Exercise | 50 min |
+| Docker Commands       | Lecture | 20 min |
+| Power of Docker | Exercise | 30 min |
 | Conclusion | Exercise | 5 min |
 
 ## Container Lifecycle (15 min)
@@ -45,7 +45,7 @@ docker start -a 2ce9bdb14238e8a6ba2ac68964ee8ca48e93e9cbf90d0c2c3f441d6be279e8b4
 
 ![](./images/docker-lifecycle.jfif)
 
-## Docker Commands (45 min)
+## Docker Commands (20 min)
 
 ### `docker run`
 
@@ -240,7 +240,7 @@ Are you sure you want to continue? [y/N]
 
 Be very sure before running this command.
 
-## Code Along: Power of Docker (50 min)
+## Code Along: Power of Docker (30 min)
 
 Lets see the real magic of Docker.
 
