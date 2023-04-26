@@ -9,12 +9,12 @@
 
 | Topic | Type | Timing |
 | --- | --- | -- |
-| Container Lifecycle       | Lecture | 15 min |
-| Docker Commands       | Lecture | 20 min |
+| Container Lifecycle       | Lecture | 10 min |
+| Docker Commands       | Lecture | 10 min |
 | Power of Docker | Exercise | 30 min |
 | Conclusion | Exercise | 5 min |
 
-## Container Lifecycle (15 min)
+## Container Lifecycle (10 min)
 
 [Here is an online browser based Ubuntu playground if Docker is not working locally.](https://www.katacoda.com/courses/ubuntu/playground)
 
@@ -45,7 +45,7 @@ docker start -a 2ce9bdb14238e8a6ba2ac68964ee8ca48e93e9cbf90d0c2c3f441d6be279e8b4
 
 ![](./images/docker-lifecycle.jfif)
 
-## Docker Commands (20 min)
+## Docker Commands (10 min)
 
 ### `docker run`
 
