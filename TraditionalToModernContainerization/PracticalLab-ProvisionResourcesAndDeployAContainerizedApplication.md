@@ -74,6 +74,30 @@ Additionally, open a Terminal to the folder root where the `SimpleTravelAgencyPr
 
 ![You can extract the files and just run the commands in any terminal](images/09AzureContainerInstances/image0001.5.png)
 
+#### Step 2.b.0
+
+Ensure you are connected to WSL 
+
+1. Open PowerShell or the Windows Terminal and type `wsl`
+
+```PowerShell
+wsl
+```  
+
+This command will start WSL on your machine.
+
+1. If you have Docker Desktop, you can just start it.  Assuming you do not have Docker Desktop, you will need to manually start the service.
+
+In the WSL terminal, type:
+
+```bash
+sudo service docker start
+```  
+
+You will be prompted for credentials.  The password is the same as the VM user password.
+
+![Starting wsl and docker](./images/PracticalLab/wslanddocker.png)  
+
 #### Step 2.b Build the local image  
 
 To build the local image, run the following command:  
@@ -84,9 +108,11 @@ docker build -t simpletravelagencyproto .
 
 ![The build completes as expected](images/09AzureContainerInstances/image0002.png)  
 
-Wait for the command to complete, then validate the image is listed in your `Docker Desktop client`.  
+Wait for the command to complete, then validate the image is listed in your `Docker Desktop client` (if you have Docker Desktop installed).  
 
 ![Docker Desktop shows the image](images/09AzureContainerInstances/image0003.png)  
+
+If you do not have Docker Desktop Installed, you must enter the docker command to list the images.
 
 > ***Question:*** Do you remember what the docker command is to see your images locally?
 
@@ -98,7 +124,9 @@ docker image ls
 
 With the image built, it's time to run it locally and ensure it works.  
 
-#### Step 2.c Run the image locally  
+#### Step 2.c Run the image locally with Docker Desktop 
+
+>**Note:** If you do not have Docker Desktop, skip to the `alternative` section below.
 
 Use the docker start command or utilize Docker Desktop to start a new container based on the image.  Map ports that make sense and don't conflict with anything on your device.  
 
@@ -136,7 +164,9 @@ http://localhost:8082/
 
 ![Configuring ports](images/09AzureContainerInstances/image0003.6.png)  
 
-#### Step 2.d Ensure the container works locally
+If you see the application, you know your container is running successfully on your local machine.
+
+#### Step 2.d Ensure the container works locally (Docker Desktop only)
 
 To finalize this step, ensure the container works locally.  
 
@@ -357,7 +387,25 @@ In this step you will alias a local image and push the image to the ACR.  You wi
 
     ![The image is being pushed to the ACR](images/09AzureContainerInstances/image0015.png)  
 
-    >**Note:** Since the image has no version, the default of `latest` is used.  
+    >**Information:** Since the image has no version, the default of `latest` is used.  
+
+    >**ERROR:** If you get an error stating that you are unauthorized, you need to set the VM docker login.
+
+    - First, logout:
+        ```bash
+        docker logout
+        ```  
+    - Second, log in with the full repo for your Azure ACR: 
+
+        ```bash
+        docker login your-acr-name.azurecr.io
+        ```  
+
+    - Third, enter the username and password from the Azure ACR Access Keys obtained earlier (Note that your password will never show up here so this can be tricky when you copy paste)
+
+    - Fourth, push the image as expected and this time it should work!
+
+    ![Reset the docker login if your credentials don't work](./images/PracticalLab/unauthorized.png)
 
     Return to your ACR in the portal and review your images by selecting `Respositories` on the left menu.  You should see your image is now in the ACR and is ready to be deployed to an Azure platform service.  If you click on image in the portal, you can see more information.
 
