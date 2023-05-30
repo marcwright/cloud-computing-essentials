@@ -33,7 +33,7 @@ If the environment is provisioned for you, then you will need to go through the 
 
 1) Send your work email and your personal email (likely your-name@somecompany.com and your-email@someemaillikegmailyahoooroutlook.com)
 2) Once we have both of your emails, you will receive an invitation to get a cloud lab machine from us, sent to your work email
-3) You will accept the invitation from your work email to log into the [Azure Labs](https://www.azurelabs.com), where you will get a VM assigned to you
+3) You will accept the invitation from your work email to log into the [Azure Labs](https://labs.azure.com), where you will get a VM assigned to you
 4) Start the VM by getting the connection information from Azure Labs and using RDP from your local machine
 5) Once you are on the Dev Machine, open a browser to your personal email.
 6) From your personal email, you'll have an invitation to join the Azure Subscription via a link to [the Azure Portal](https://portal.azure.com) 
